@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Payment Method</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .payment-option {
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .payment-option:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Your Payment Method</h2>
+        <button class="payment-option" onclick="redirectTo('paypal')">Paypal</button>
+        <button class="payment-option" onclick="redirectTo('momo')">Momo</button>
+    </div>
+
+    <script>
+               function redirectTo(method) {
+            if (method === 'paypal') {
+                window.location.href = "paypal.html";
+            } else if (method === 'momo') {
+                window.location.href = "visa.html"; // Đảm bảo bạn có file momo.html
+            }
+        }
+    </script>
+</body>
+</html>
+

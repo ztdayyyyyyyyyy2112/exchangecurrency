@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay with MoMo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background: #ff5e62;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #e04e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pay with MoMo</h2>
+        <button onclick="payWithMomo()">Proceed to Payment</button>
+    </div>
+
+    <script>
+        function payWithMomo() {
+            const partnerCode = "MOMOXXXXXXXX"; // Thay bằng Mã Đối Tác MoMo của bạn
+            const orderId = `ORDER_${Date.now()}`;
+            const amount = 10000; // Số tiền cần thanh toán
+            const returnUrl = "https://yourwebsite.com/payment-success"; // Link quay về sau khi thanh toán
+            const paymentUrl = `https://payment.momo.vn/v2/gateway/pay?partnerCode=${partnerCode}&orderId=${orderId}&amount=${amount}&lang=en&returnUrl=${encodeURIComponent(returnUrl)}`;
+
+            window.location.href = paymentUrl; // Chuyển hướng đến cổng thanh toán MoMo
+        }
+    </script>
+</body>
+</html>

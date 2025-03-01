@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay with PayPal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0070ba, #1546a0);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background: #ffc439;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #e0b131;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pay with PayPal</h2>
+        <button onclick="payWithPayPal()">Proceed to Payment</button>
+    </div>
+
+    <script>
+        function payWithPayPal() {
+            const businessEmail = "your-paypal-business@example.com"; // Thay bằng email tài khoản PayPal doanh nghiệp
+            const amount = "10.00"; // Số tiền cần thanh toán (USD)
+            const currency = "USD";
+            const returnUrl = "https://yourwebsite.com/payment-success"; // Link quay về sau khi thanh toán
+            const cancelUrl = "https://yourwebsite.com/payment-cancel"; // Link nếu người dùng hủy thanh toán
+
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${businessEmail}&item_name=Purchase&amount=${amount}&currency_code=${currency}&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}`;
+
+            window.location.href = paypalUrl; // Chuyển hướng đến PayPal
+        }
+    </script>
+</body>
+</html>
