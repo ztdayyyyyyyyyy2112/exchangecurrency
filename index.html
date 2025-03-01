@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán quốc tế</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            animation: gradientBG 5s infinite alternate;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: left; }
+            100% { background-position: right; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: 0.3s;
+            appearance: none;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        #convertButton {
+            background: #2575fc;
+            color: white;
+        }
+
+        #convertButton:hover {
+            background: #1a5fd1;
+        }
+
+        #paymentButton {
+            display: none;
+            background: #28a745;
+            color: white;
+        }
+
+        #paymentButton:hover {
+            background: #218838;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>International Payment</h2>
+        <select id="fromCurrency">
+            <option value="" disabled selected>Select your currency</option>
+        </select>
+        <input type="number" placeholder="Enter price" id="amount">
+        <select id="toCurrency">
+            <option value="" disabled selected>Select exchange currency</option>
+        </select>
+        <button id="convertButton" onclick="convertCurrency()">Exchange</button>
+        <p id="result"></p>
+        <button id="paymentButton" onclick="redirectToPayment()">Do you want to make an international payment with Visa/Mastercard?</button>
+    </div>
+
+    <script>
+        const apiKey = "dcb16ca181334d9e83f3a5aedc6d9529";
+        const apiUrl = `https://open.er-api.com/v6/latest`;
+        let exchangeRates = {};
+
+        async function fetchExchangeRates() {
+            try {
+                let response = await fetch(`${apiUrl}?apikey=${apiKey}`);
+                let data = await response.json();
+                exchangeRates = data.rates;
+                populateCurrencyOptions();
+            } catch (error) {
+                console.error("Lỗi khi lấy tỷ giá:", error);
+            }
+        }
+
+        function populateCurrencyOptions() {
+            const fromSelect = document.getElementById("fromCurrency");
+            const toSelect = document.getElementById("toCurrency");
+            fromSelect.innerHTML = `<option value="" disabled selected>Select your currency</option>`;
+            toSelect.innerHTML = `<option value="" disabled selected>Select exchange currency</option>`;
+            
+            for (let currency in exchangeRates) {
+                let option1 = document.createElement("option");
+                let option2 = document.createElement("option");
+                option1.value = option2.value = currency;
+                option1.textContent = option2.textContent = currency;
+                fromSelect.appendChild(option1);
+                toSelect.appendChild(option2);
+            }
+
+            toSelect.value = "USD"; 
+        }
+
+        function convertCurrency() {
+            let fromCurrency = document.getElementById("fromCurrency").value;
+            let toCurrency = document.getElementById("toCurrency").value;
+            let amount = document.getElementById("amount").value;
+
+            if (!fromCurrency || !toCurrency || amount <= 0) {
+                document.getElementById("result").innerText = "Vui lòng nhập thông tin hợp lệ!";
+                return;
+            }
+
+            if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+                document.getElementById("result").innerText = "Không thể lấy tỷ giá!";
+                return;
+            }
+
+            let convertedAmount = (amount / exchangeRates[fromCurrency] * exchangeRates[toCurrency]).toFixed(2);
+            document.getElementById("result").innerText = `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`;
+            
+            document.getElementById("paymentButton").style.display = "block";
+        }
+
+        function redirectToPayment() {
+            window.location.href = "payment.html";
+        }
+
+        fetchExchangeRates();
+    </script>
+</body>
+</html>
